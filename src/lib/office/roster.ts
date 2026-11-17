@@ -12,10 +12,27 @@ export type OfficeTeamRole = {
     | "hq";
   floor: "hermes" | "studio";
   responsibilities: string[];
+  /** Optional working-style note shown in the team panel. */
+  personality?: string;
 };
 
 /** Configured team plan. Names are only shown where the user specified them. */
 export const OFFICE_ROSTER: readonly OfficeTeamRole[] = [
+  {
+    id: "founder",
+    name: "Fikriaz",
+    role: "Founder",
+    roleId: "founder",
+    room: "hq",
+    floor: "hermes",
+    responsibilities: [
+      "Set the vision and direction",
+      "Decide priorities and trade-offs",
+      "Unblock the team and connect the dots",
+    ],
+    personality:
+      "Curious ENTJ — relentless \"why?\", fast decisions, a dash of ADHD restlessness.",
+  },
   {
     id: "tech-lead",
     name: "Fikri",

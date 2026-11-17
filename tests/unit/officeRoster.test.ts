@@ -8,6 +8,17 @@ describe("OFFICE_ROSTER", () => {
     expect(techLead?.name).toBe("Fikri");
   });
 
+  it("includes the founder in HQ with a working-style note", () => {
+    const founder = OFFICE_ROSTER.find((member) => member.roleId === "founder");
+    expect(founder).toMatchObject({ name: "Fikriaz", role: "Founder", room: "hq", floor: "hermes" });
+    expect(founder?.responsibilities.length).toBeGreaterThan(0);
+    expect(founder?.personality).toContain("ENTJ");
+  });
+
+  it("lists the founder before the rest of the team", () => {
+    expect(OFFICE_ROSTER[0].roleId).toBe("founder");
+  });
+
   it("renames the backend engineer to Nabila instead of Fitri", () => {
     const backend = OFFICE_ROSTER.find((member) => member.roleId === "backend_engineer");
     expect(backend?.name).toBe("Nabila");
