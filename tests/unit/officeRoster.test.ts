@@ -1,18 +1,37 @@
 import { describe, expect, it } from "vitest";
 
-import { OFFICE_ROSTER, getRosterByFloor } from "@/lib/office/roster";
+import {
+  OFFICE_ROSTER,
+  ROSTER_AGENT_IDS,
+  getRosterByFloor,
+  getRosterMemberByAgentId,
+} from "@/lib/office/roster";
 
 describe("OFFICE_ROSTER", () => {
-  it("has Fikri as the tech lead", () => {
+  it("has Kevin as the tech lead", () => {
     const techLead = OFFICE_ROSTER.find((member) => member.roleId === "tech_lead");
-    expect(techLead?.name).toBe("Fikri");
+    expect(techLead?.name).toBe("Kevin");
   });
 
   it("includes the founder in HQ with a working-style note", () => {
     const founder = OFFICE_ROSTER.find((member) => member.roleId === "founder");
-    expect(founder).toMatchObject({ name: "Fikriaz", role: "Founder", room: "hq", floor: "hermes" });
+    expect(founder).toMatchObject({ name: "Fikri", role: "Founder", room: "hq", floor: "hermes" });
     expect(founder?.responsibilities.length).toBeGreaterThan(0);
     expect(founder?.personality).toContain("ENTJ");
+  });
+
+  it("gives every member a gateway agent id matching their roster id", () => {
+    for (const member of OFFICE_ROSTER) {
+      expect(member.agentId).toBe(member.id);
+    }
+    expect(new Set(ROSTER_AGENT_IDS).size).toBe(OFFICE_ROSTER.length);
+  });
+
+  it("resolves a roster member from a gateway agent id", () => {
+    expect(getRosterMemberByAgentId("tech-lead")?.name).toBe("Kevin");
+    expect(getRosterMemberByAgentId("founder")?.role).toBe("Founder");
+    expect(getRosterMemberByAgentId("does-not-exist")).toBeNull();
+    expect(getRosterMemberByAgentId(null)).toBeNull();
   });
 
   it("lists the founder before the rest of the team", () => {

@@ -13,7 +13,7 @@ describe("OfficeFloorControls team panel", () => {
     fireEvent.click(screen.getByRole("button", { name: "Tim & alur video" }));
 
     expect(screen.getByRole("heading", { name: "Founder · HQ" })).toBeInTheDocument();
-    expect(screen.getByText("Fikriaz")).toBeInTheDocument();
+    expect(screen.getByText("Fikri")).toBeInTheDocument();
     expect(screen.getByText(/Curious ENTJ/)).toBeInTheDocument();
   });
 
@@ -24,7 +24,7 @@ describe("OfficeFloorControls team panel", () => {
     const itSection = screen.getByRole("heading", { name: "Tim IT · HQ" });
     expect(itSection).toBeInTheDocument();
     // Fikriaz appears exactly once (founder section only).
-    expect(screen.getAllByText("Fikriaz")).toHaveLength(1);
+    expect(screen.getAllByText("Fikri")).toHaveLength(1);
   });
 
   it("still lists the social media team", () => {

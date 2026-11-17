@@ -26,6 +26,7 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const { WebSocketServer } = require("ws");
+const { seedOfficeAgents } = require("./office-team-seed");
 
 function loadDotenvFile(filePath) {
   if (!fs.existsSync(filePath)) return;
@@ -231,6 +232,12 @@ const agentRegistry = new Map([
     settings: { wipe: false, continuity: true, model: HERMES_MODEL },
   }],
 ]);
+
+// Every roster member becomes a real, addressable agent so the task board can
+// assign work to them. Ids must match src/lib/office/roster.ts.
+const seededOfficeAgentIds = seedOfficeAgents(agentRegistry, HOME, HERMES_MODEL);
+console.log(`[hermes-adapter] Seeded ${seededOfficeAgentIds.length} office agents: ${seededOfficeAgentIds.join(", ")}`);
+
 
 // Set of all active sendEvent functions (one per connected WS client)
 /** @type {Set<(frame: object) => void>} */

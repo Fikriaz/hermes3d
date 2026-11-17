@@ -7,6 +7,7 @@ const { WebSocketServer } = require("ws");
 const ADAPTER_PORT = parseInt(process.env.DEMO_ADAPTER_PORT || "18789", 10);
 const MAIN_KEY = "main";
 const MODELS = [{ id: "demo/mock-office", name: "Mock Office", provider: "demo" }];
+const { OFFICE_TEAM } = require("./office-team-seed");
 
 const agents = new Map([
   [
@@ -37,6 +38,24 @@ const agents = new Map([
     },
   ],
 ]);
+
+// Mirror the real office roster so the demo floor shows the same team and the
+// task board can assign to the same agent ids as the Hermes adapter.
+for (const member of OFFICE_TEAM) {
+  if (agents.has(member.id)) continue;
+  agents.set(member.id, {
+    id: member.id,
+    name: member.name,
+    role: member.role,
+    workspace: `/demo/${member.id}`,
+    team: {
+      room: member.room,
+      responsibilities: member.responsibilities,
+      personality: member.personality ?? null,
+    },
+  });
+}
+
 
 const files = new Map();
 const sessionSettings = new Map();
